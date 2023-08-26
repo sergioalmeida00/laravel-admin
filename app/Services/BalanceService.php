@@ -8,12 +8,13 @@ use Illuminate\Support\Str;
 class BalanceService
 {
 
-    public function listBalanceUser($userId)
+    public function getBalanceUser($userId)
     {
         $balanceUser = DB::table('transactions')
             ->where('user_id', '=', $userId)
-            ->first();
-        $amountBalance = $balanceUser ? $balanceUser->amount : 0;
+            ->sum('amount');
+
+        $amountBalance = $balanceUser ? $balanceUser : 0;
         return $amountBalance;
     }
 
@@ -26,7 +27,7 @@ class BalanceService
     }
 
     public function create($transactionData){
-        DB::table('transaction')
+        DB::table('transactions')
             ->insert([
                 'id' => Str::uuid(),
                 'user_id' => $transactionData['user_id'],

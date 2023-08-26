@@ -17,7 +17,7 @@ class BalanceController extends Controller
 
     public function index(){
         $userId = auth()->user()->id;
-        $resultBalance = $this->historicService->listBalanceUser($userId);
+        $resultBalance = $this->historicService->getBalanceUser($userId);
         $categories = $this->historicService->listCategories();
 
         return view('admin.balance.index',[
@@ -28,12 +28,8 @@ class BalanceController extends Controller
     }
 
     public function store(Request $request){
-
-        $validatedData = Validator::make($request->all(), [
-            'name' => 'required',
-            'type' => 'required',
-            'amount' => 'required',
-        ]);
+        $userId = auth()->user()->id;
+        $validatedData = $this->validateData($request);
 
         if ($validatedData->fails()) {
             return response()->json([
@@ -41,6 +37,21 @@ class BalanceController extends Controller
                 'fields' => $validatedData->errors()->keys(),
             ]);
         }
-        return response()->json(['success' => true,'values' => $request->all()]);
+
+        $allData = $request->all();
+        $allData['user_id'] = $userId;
+
+        $this->historicService->create($allData);
+
+
+        return response()->json(['success' => true,'values' => $allData]);
+    }
+
+    public function validateData(Request $request){
+        return Validator::make($request->all(), [
+            'name' => 'required',
+            'type' => 'required',
+            'amount' => 'required',
+        ]);
     }
 }
