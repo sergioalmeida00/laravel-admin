@@ -25,6 +25,7 @@ class BalanceController extends Controller
             'expenseTotal' => $resultBalance['expenseTotal'],
             'balance' => $resultBalance['balance'],
             'transactions' => $resultBalance['transactions'],
+            'amountByCategory' => $resultBalance['amountByCategory'],
             'categories' => $categories,
         ]);
     }

@@ -24,15 +24,17 @@ class BalanceService
                 $expenseTotal += $transaction->amount;
             }
         }
+        $amountByCategory = $this->getTransactionsCategoryByUser($userId);
 
-        $balance = $expenseTotal - $incomeTotal;
+        $balance = $incomeTotal - $expenseTotal;
 
         // $amountBalance = $balanceUser ? $balanceUser : 0;
         return [
             'incomeTotal' => $incomeTotal,
             'expenseTotal' => $expenseTotal,
             'balance' => $balance,
-            'transactions' => $transactions
+            'transactions' => $transactions,
+            'amountByCategory' => $amountByCategory
         ];
     }
 
@@ -54,5 +56,40 @@ class BalanceService
                 'type' => $transactionData['type'],
                 'category_id' => $transactionData['category_id'],
             ]);
+    }
+
+    public function getTransactionsCategoryByUser($userId){
+        $transactionsByCategory = DB::table('transactions')
+            ->join('category', 'transactions.category_id', '=', 'category.id')
+            ->select('transactions.*', 'category.name as category_name')
+            ->where('transactions.user_id','=',$userId)
+            ->get()
+            ->groupBy('category_name');
+
+        $expenseTotalsByCategory = [];
+        $incomeTotal = 0;
+
+        foreach ($transactionsByCategory as $categoryName => $transactions) {
+
+            foreach ($transactions as $transaction) {
+                if($transaction->type === 'INCOME'){
+                    $incomeTotal += $transaction->amount;
+                }elseif ($transaction->type === 'EXPENSE') {
+                    if (!isset($expenseTotalsByCategory[$categoryName])) {
+                        $expenseTotalsByCategory[$categoryName] = 0;
+                    }
+                    $expenseTotalsByCategory[$categoryName] += $transaction->amount;
+                }
+            }
+        }
+
+        $expensePercentagesByCategory = [];
+        foreach ($expenseTotalsByCategory as $categoryName => $expenseTotal) {
+            $expensePercentage = ($expenseTotal / $incomeTotal) * 100;
+            $expensePercentagesByCategory[$categoryName] = $expensePercentage;
+        }
+
+        return $expensePercentagesByCategory;
+
     }
 }

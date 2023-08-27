@@ -32,8 +32,8 @@
                     <div class="form-group">
                         <select class="form-control form-control-sm" name="type">
                             <option selected disabled value="">Selecione a Transação</option>
-                            <option value="EXPENSE">Credito</option>
-                            <option value="INCOME">Debito</option>
+                            <option value="INCOME">Credito</option>
+                            <option value="EXPENSE">Debito</option>
                         </select>
                     </div>
                     <div class="modal-footer">

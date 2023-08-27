@@ -14,7 +14,7 @@
         <div class="col-lg-4 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
-                    <h3>R$ {{ number_format($expenseTotal, 2, '.', '') }} </h3>
+                    <h3>R$ {{ number_format($incomeTotal, 2, '.', '') }} </h3>
                     <p>Entradas</p>
                 </div>
                 <div class="icon">
@@ -25,7 +25,7 @@
         <div class="col-lg-4 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>R$ {{ number_format($incomeTotal, 2, '.', '') }} </h3>
+                    <h3>R$ {{ number_format($expenseTotal, 2, '.', '') }} </h3>
                     <p>Saidas</p>
                 </div>
                 <div class="icon">
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-8">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Movimentações</h3>
@@ -69,14 +69,36 @@
                                     <td> {{ $transaction->id }} </td>
                                     <td> {{ $transaction->name }} </td>
                                     <td> R$ {{ number_format($transaction->amount, 2, '.', '') }} </td>
-                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created)->format('d/m/Y') }}</td>
+                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created)->format('d/m/Y') }}
+                                    </td>
                                     <td><span
-                                            class="badge {{ $transaction->type === 'INCOME' ? 'badge-danger' : 'badge-success' }}">
+                                            class="badge {{ $transaction->type === 'EXPENSE' ? 'badge-danger' : 'badge-success' }}">
                                             {{ $transaction->type }} </span></td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Percentual por Categoria</h3>
+                </div>
+
+                <div class="card-body">
+                    @foreach ($amountByCategory as $categoryName => $item)
+                        <strong> {{ $categoryName }} </strong>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" style="width: {{ $item + 5 }}%">
+                                 {{ number_format($item, 2) }}%
+                            </div>
+                        </div>
+
+                    @endforeach
                 </div>
 
             </div>
