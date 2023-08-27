@@ -21,9 +21,11 @@ class BalanceController extends Controller
         $categories = $this->historicService->listCategories();
 
         return view('admin.balance.index',[
-            'amount' => $resultBalance,
+            'incomeTotal' => $resultBalance['incomeTotal'],
+            'expenseTotal' => $resultBalance['expenseTotal'],
+            'balance' => $resultBalance['balance'],
+            'transactions' => $resultBalance['transactions'],
             'categories' => $categories,
-
         ]);
     }
 

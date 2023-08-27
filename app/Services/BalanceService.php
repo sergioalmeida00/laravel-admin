@@ -10,12 +10,30 @@ class BalanceService
 
     public function getBalanceUser($userId)
     {
-        $balanceUser = DB::table('transactions')
+        $transactions = DB::table('transactions')
             ->where('user_id', '=', $userId)
-            ->sum('amount');
+            ->get();
 
-        $amountBalance = $balanceUser ? $balanceUser : 0;
-        return $amountBalance;
+        $incomeTotal = 0;
+        $expenseTotal = 0;
+
+        foreach($transactions as $transaction){
+            if($transaction->type === 'INCOME'){
+                $incomeTotal += $transaction->amount;
+            }elseif($transaction->type === 'EXPENSE'){
+                $expenseTotal += $transaction->amount;
+            }
+        }
+
+        $balance = $expenseTotal - $incomeTotal;
+
+        // $amountBalance = $balanceUser ? $balanceUser : 0;
+        return [
+            'incomeTotal' => $incomeTotal,
+            'expenseTotal' => $expenseTotal,
+            'balance' => $balance,
+            'transactions' => $transactions
+        ];
     }
 
     public function listCategories(){
