@@ -97,7 +97,6 @@
                                  {{ number_format($item, 2) }}%
                             </div>
                         </div>
-
                     @endforeach
                 </div>
 

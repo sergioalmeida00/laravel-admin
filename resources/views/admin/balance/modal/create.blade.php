@@ -1,3 +1,23 @@
+<style>
+    .btn-check {
+        position: absolute;
+        left: -9999px;
+    }
+
+    #success-outlined:checked+label {
+        background-color: #28a745;
+        /* Cor de fundo para botão de sucesso */
+        color: #fff;
+        /* Cor do texto */
+    }
+
+    #danger-outlined:checked+label {
+        background-color: #dc3545;
+        /* Cor de fundo para botão de perigo */
+        color: #fff;
+        /* Cor do texto */
+    }
+</style>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -29,13 +49,20 @@
                     <div class="form-group">
                         <input class="form-control form-control-sm" type="date" name="date" placeholder="Data">
                     </div>
-                    <div class="form-group">
-                        <select class="form-control form-control-sm" name="type">
-                            <option selected disabled value="">Selecione a Transação</option>
-                            <option value="INCOME">Credito</option>
-                            <option value="EXPENSE">Debito</option>
-                        </select>
+                    <div class="form-group d-flex">
+                        <div class="flex-fill mx-1">
+                            <input type="radio" class="btn-check d-none" name="type" value="INCOME"
+                                id="success-outlined" autocomplete="off">
+                            <label class="btn btn-outline-success w-100" for="success-outlined">Credito</label>
+                        </div>
+
+                        <div class="flex-fill mx-1">
+                            <input type="radio" class="btn-check d-none" name="type" value="EXPENSE"
+                                id="danger-outlined" autocomplete="off">
+                            <label class="btn btn-outline-danger w-100" for="danger-outlined">Debito</label>
+                        </div>
                     </div>
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                         <button type="submit" class="btn btn-primary">Salvar</button>
