@@ -19,7 +19,7 @@ class BalanceController extends Controller
         $userId = auth()->user()->id;
         $resultBalance = $this->historicService->getBalanceUser($userId);
         $categories = $this->historicService->listCategories();
-
+        // dd($resultBalance['amountByCategory']);
         return view('admin.balance.index',[
             'incomeTotal' => $resultBalance['incomeTotal'],
             'expenseTotal' => $resultBalance['expenseTotal'],

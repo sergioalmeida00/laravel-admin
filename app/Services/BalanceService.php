@@ -89,7 +89,17 @@ class BalanceService
             $expensePercentagesByCategory[$categoryName] = $expensePercentage;
         }
 
-        return $expensePercentagesByCategory;
+        $mergeArray = [];
+
+        foreach ($expensePercentagesByCategory as $categoryName => $value) {
+            $mergeArray[] = [
+                'categoryName' => $categoryName,
+                'percentage' => $value,
+                'total' => $expenseTotalsByCategory[$categoryName] ?? 0,
+            ];
+        }
+
+        return $mergeArray;
 
     }
 }

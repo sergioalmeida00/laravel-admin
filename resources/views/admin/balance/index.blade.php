@@ -12,7 +12,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-info">
+            <div class="small-box bg-success">
                 <div class="inner">
                     <h3>R$ {{ number_format($incomeTotal, 2, '.', '') }} </h3>
                     <p>Entradas</p>
@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="col-lg-4 col-6">
-            <div class="small-box bg-success">
+            <div class="small-box bg-info">
                 <div class="inner">
                     <h3>R$ {{ number_format($balance, 2, '.', '') }} </h3>
                     <p>Atual</p>
@@ -52,7 +52,7 @@
                     <h3 class="card-title">Movimentações</h3>
                 </div>
 
-                <div class="card-body table-responsive p-0" style="height: 300px;">
+                <div class="card-body table-responsive p-0" style="height: 100%;">
                     <table class="table table-head-fixed text-nowrap">
                         <thead>
                             <tr>
@@ -90,11 +90,15 @@
                 </div>
 
                 <div class="card-body">
-                    @foreach ($amountByCategory as $categoryName => $item)
-                        <strong> {{ $categoryName }} </strong>
+                    @foreach ($amountByCategory as $categoryData)
+                        <strong>
+                            {{ $categoryData['categoryName'] }}
+                            <small> - R$: {{ number_format($categoryData['total'], 2) }} </small>
+                        </strong>
+
                         <div class="progress mb-2">
-                            <div class="progress-bar bg-success" style="width: {{ $item + 5 }}%">
-                                 {{ number_format($item, 2) }}%
+                            <div class="progress-bar bg-primary" style="width: {{ $categoryData['percentage'] + 5 }}%">
+                                {{ number_format($categoryData['percentage'], 2) }}%
                             </div>
                         </div>
                     @endforeach
