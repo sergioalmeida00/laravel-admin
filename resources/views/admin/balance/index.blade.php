@@ -3,10 +3,12 @@
 @section('title', 'Saldo')
 
 @section('content_header')
-    <h1>Saldo</h1>
-    <button type="button" class="btn btn-primary" data-toggle="modal" id="modal" data-target="#exampleModal">
-        Launch demo modal
-    </button>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h1>Saldo</h1>
+        <button type="button" class="btn btn-success" data-toggle="modal" id="modal" data-target="#exampleModal">
+            + Adicionar
+        </button>
+    </div>
 @stop
 
 @section('content')
