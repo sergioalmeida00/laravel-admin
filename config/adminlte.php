@@ -315,7 +315,7 @@ return [
                ],
                [
                 'text' => 'Historico',
-                'url' => 'admin/historic',
+                'url' => 'category',
                 'icon' => 'fas fa-solid fa-clock-rotate-left',
                ]
             ]

@@ -6,6 +6,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/balance','Admin\BalanceController@store')->name('admin.store');
 });
 
+Route::middleware(['auth'])->prefix('category')->group(function () {
+    Route::get('/','Admin\CategoryController@index')->name('category.index');
+    Route::post('/','Admin\CategoryController@store')->name('category.store');
+});
+
 
 Route::get('/','Site\SiteController@index')->name('home');
 
