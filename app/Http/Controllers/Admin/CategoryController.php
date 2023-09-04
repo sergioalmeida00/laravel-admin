@@ -38,6 +38,8 @@ class CategoryController extends Controller
 
         $this->categoryService->create($request->all());
 
+        $request->session()->flash('success', 'Categoria adicionada com sucesso!');
+
         return response()->json(['success' => true]);
     }
 

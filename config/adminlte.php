@@ -311,10 +311,10 @@ return [
                [
                 'text' => 'Saldo',
                 'url'  => 'admin/balance',
-                'icon' => 'fas fa-solid fa-money-bill-wave',
+                'icon' => 'fas fa-comment-dollar',
                ],
                [
-                'text' => 'Historico',
+                'text' => 'Categoria',
                 'url' => 'category',
                 'icon' => 'fas fa-solid fa-clock-rotate-left',
                ]

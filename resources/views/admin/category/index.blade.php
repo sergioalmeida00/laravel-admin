@@ -11,6 +11,13 @@
 @stop
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-dismissible bg-teal color-palette">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <i class="icon fas fa-check"></i>
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -50,4 +57,3 @@
     </div>
     @include('admin.category.create-form')
 @stop
-
