@@ -6,6 +6,7 @@
 
 @section('modal-content')
     <form action="{{ route('category.store') }}" method="POST" id="form-category">
+
         <div class="form-group">
             <input class="form-control form-control-sm @error('name') is-invalid @enderror" type="text" name="name"
                 placeholder="Descrição da Categoria">
@@ -40,6 +41,7 @@
                 if (response.ok) {
 
                     const responseData = await response.json();
+                    console.log(responseData)
                     if (responseData.success) {
                         hideModalAndNavigate('{{ route('category.index') }}')
                     } else {

@@ -8,7 +8,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 Route::middleware(['auth'])->prefix('category')->group(function () {
     Route::get('/','Admin\CategoryController@index')->name('category.index');
+    Route::get('/{id}','Admin\CategoryController@edit')->name('category.edit');
     Route::post('/','Admin\CategoryController@store')->name('category.store');
+    Route::post('/update/{id}','Admin\CategoryController@update')->name('category.update');
 });
 
 

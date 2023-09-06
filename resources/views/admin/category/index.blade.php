@@ -4,7 +4,8 @@
 @section('content_header')
     <div class="d-flex justify-content-between align-items-center mb-2">
         <h1>Categoria</h1>
-        <button type="button" class="btn btn-success" data-toggle="modal" id="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-success" data-toggle="modal" id="modal" data-target="#exampleModal"
+            data-action="add">
             + Adicionar
         </button>
     </div>
@@ -40,12 +41,13 @@
                                     <td> {{ $category->id }} </td>
                                     <td> {{ $category->name }} </td>
                                     <td>
-                                        <a href="" class="btn btn-warning">
+                                        <button value="{{ $category->id }}" class="btn btn-warning btn-edit"
+                                            data-toggle="modal" data-target="#exampleModal" data-action="edit">
                                             <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="" class="btn btn-danger">
+                                        </button>
+                                        <button href="" class="btn btn-danger">
                                             <i class="fas fa-trash-alt"></i>
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -56,4 +58,36 @@
         </div>
     </div>
     @include('admin.category.create-form')
+    <script>
+        const btnEdit = document.querySelectorAll('.btn-edit');
+        const inputName = document.querySelector('input[name="name"]');
+
+
+        btnEdit.forEach((btn) => {
+            if (btn.getAttribute('data-action') === 'edit') {
+                btn.addEventListener('click', () => handleEditButtonClick(btn));
+            }
+        });
+
+        async function handleEditButtonClick(btn) {
+            const categoryID = btn.value;
+            const categoryData = await getCategoryId(categoryID);
+            inputName.value = categoryData.name;
+            formCatgory.action = `{{ url('category/update/') }}/${categoryID}`;
+        }
+
+        async function getCategoryId(idCategory) {
+            try {
+                const response = await fetch(`{{ url('category') }}/${idCategory}`);
+                if (!response.ok) {
+                    throw new Error('Erro na requisição');
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Erro durante a requisição:', error);
+                return {};
+            }
+        }
+    </script>
 @stop

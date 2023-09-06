@@ -18,4 +18,20 @@ class CategoryService{
                 'name' => strtoupper($categoryData['name'])
             ]);
     }
+
+    public function getCategoryById($idCategory){
+        $category = DB::table('category')
+            ->where('id', '=', $idCategory)
+            ->first();
+
+        return $category;
+    }
+
+    public function update($dataCategory, $idCategory){
+        $category = DB::table('category')
+            ->where('id', '=', $idCategory)
+            ->update([
+                'name' => $dataCategory['name']
+            ]);
+    }
 }

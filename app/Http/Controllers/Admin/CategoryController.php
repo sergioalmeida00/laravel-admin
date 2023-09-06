@@ -51,12 +51,24 @@ class CategoryController extends Controller
 
     public function edit($id)
     {
-        //
+        $categoryById = $this->categoryService->getCategoryById($id);
+        return response()->json($categoryById);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $categoryData = $this->validateCategoryData($request);
+
+        if($categoryData->fails()){
+            return response()->json([
+                'errors' => $categoryData->errors()->all(),
+                'fields' => $categoryData->errors()->keys(),
+            ]);
+        }
+
+        $this->categoryService->update($request->all(), $id);
+
+        return response()->json(['success' => true, 'id' => $id]);
     }
 
     public function destroy($id)
