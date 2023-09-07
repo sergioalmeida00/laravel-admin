@@ -60,8 +60,12 @@
     @include('admin.category.create-form')
     <script>
         const btnEdit = document.querySelectorAll('.btn-edit');
+        const addButton = document.querySelector('button[data-action="add"]');
         const inputName = document.querySelector('input[name="name"]');
 
+        addButton.addEventListener('click', () =>{
+            inputName.value = '';
+        })
 
         btnEdit.forEach((btn) => {
             if (btn.getAttribute('data-action') === 'edit') {
