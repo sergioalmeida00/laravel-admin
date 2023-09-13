@@ -1,5 +1,5 @@
 @extends('layouts.modal.modal')
-
+@section('modal-id', 'exampleModal')
 @section('modal-title')
     Cadastro de Categoria
 @endsection

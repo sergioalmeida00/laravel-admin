@@ -43,12 +43,6 @@ class CategoryController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function show($id)
-    {
-        //
-    }
-
-
     public function edit($id)
     {
         $categoryById = $this->categoryService->getCategoryById($id);
@@ -71,9 +65,15 @@ class CategoryController extends Controller
         return response()->json(['success' => true, 'id' => $id]);
     }
 
-    public function destroy($id)
+    public function destroy(Request $request,$id)
     {
-        //
+        $affectedRows = $this->categoryService->delete($id);
+
+        if ($affectedRows > 0) {
+            $request->session()->flash('success', 'Categoria excluida com sucesso!');
+            return response()->json(['message' => 'Categoria excluída com sucesso'], 200);
+        }
+        return response()->json(['message' => 'Nenhuma categoria foi excluída'], 404);
     }
 
     public function validateCategoryData(Request $request){

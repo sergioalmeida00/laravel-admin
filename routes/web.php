@@ -11,6 +11,7 @@ Route::middleware(['auth'])->prefix('category')->group(function () {
     Route::get('/{id}','Admin\CategoryController@edit')->name('category.edit');
     Route::post('/','Admin\CategoryController@store')->name('category.store');
     Route::post('/update/{id}','Admin\CategoryController@update')->name('category.update');
+    Route::delete('/{id}','Admin\CategoryController@destroy')->name('category.delete');
 });
 
 

@@ -34,4 +34,10 @@ class CategoryService{
                 'name' => $dataCategory['name']
             ]);
     }
+
+    public function delete($idCategory){
+        return DB::table('category')
+            ->where('id', '=', $idCategory)
+            ->delete();
+    }
 }

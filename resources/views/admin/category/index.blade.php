@@ -45,7 +45,8 @@
                                             data-toggle="modal" data-target="#exampleModal" data-action="edit">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button href="" class="btn btn-danger">
+                                        <button value="{{ $category->id }}" class="btn btn-danger btn-delete"
+                                            data-action="delete">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </td>
@@ -58,23 +59,52 @@
         </div>
     </div>
     @include('admin.category.create-form')
+
     <script>
-        const btnEdit = document.querySelectorAll('.btn-edit');
+        const btnEditDelete = document.querySelectorAll('.btn-edit, .btn-delete');
         const addButton = document.querySelector('button[data-action="add"]');
         const inputName = document.querySelector('input[name="name"]');
 
-        addButton.addEventListener('click', () =>{
+
+        addButton.addEventListener('click', () => {
             inputName.value = '';
         })
 
-        btnEdit.forEach((btn) => {
-            if (btn.getAttribute('data-action') === 'edit') {
-                btn.addEventListener('click', () => handleEditButtonClick(btn));
-            }
+        btnEditDelete.forEach((btn) => {
+            const action = btn.getAttribute('data-action');
+            const idCategory = btn.value;
+
+            btn.addEventListener('click', () => {
+                if (action === 'edit') {
+                    handleEditButtonClick(idCategory);
+                } else if (action === 'delete') {
+                    handleDelete(idCategory);
+                }
+            })
+            // if (btn.getAttribute('data-action') === 'edit') {
+            //     btn.addEventListener('click', () => handleEditButtonClick(btn));
+            // }
         });
 
-        async function handleEditButtonClick(btn) {
-            const categoryID = btn.value;
+
+        async function handleDelete(idCategory) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            const response = await fetch(`{{ url('category') }}/${idCategory}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+            })
+
+            if(response.status === 200){
+                window.location.href = `{{route('category.index')}}`
+            }
+        }
+
+        async function handleEditButtonClick(categoryID) {
+            // const categoryID = btn.value;
             const categoryData = await getCategoryId(categoryID);
             inputName.value = categoryData.name;
             formCatgory.action = `{{ url('category/update/') }}/${categoryID}`;
