@@ -2,8 +2,16 @@
 namespace App\Services;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Models\Category;
 
 class CategoryService{
+    protected $category;
+
+    public function __construct(Category $category)
+    {
+        $this->category = $category;
+    }
+
     public function getCategories(){
         $categories = DB::table('category')
             ->get();
@@ -12,11 +20,9 @@ class CategoryService{
     }
 
     public function create($categoryData){
-        DB::table('category')
-            ->insert([
-                'id' => Str::uuid(),
-                'name' => strtoupper($categoryData['name'])
-            ]);
+        $categoryData['id'] = Str::uuid();
+
+        $this->category->createCategory($categoryData);
     }
 
     public function getCategoryById($idCategory){
@@ -28,11 +34,13 @@ class CategoryService{
     }
 
     public function update($dataCategory, $idCategory){
-        $category = DB::table('category')
-            ->where('id', '=', $idCategory)
-            ->update([
-                'name' => $dataCategory['name']
-            ]);
+
+        $existCategory = $this->category->findOne($idCategory);
+
+        if($existCategory){
+            $this->category->updateCategory($dataCategory,$idCategory );
+        }
+
     }
 
     public function delete($idCategory){
