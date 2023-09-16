@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Balance;
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class BalanceService
@@ -64,12 +63,7 @@ class BalanceService
 
     public function getTransactionsCategoryByUser($userId)
     {
-        $transactionsByCategory = DB::table('transactions')
-            ->join('category', 'transactions.category_id', '=', 'category.id')
-            ->select('transactions.*', 'category.name as category_name')
-            ->where('transactions.user_id', '=', $userId)
-            ->get()
-            ->groupBy('category_name');
+        $transactionsByCategory = $this->repositoryBalance->getTransactionsCategoryByUser($userId);
 
         $expenseTotalsByCategory = [];
         $incomeTotal = 0;
