@@ -2,25 +2,35 @@
 
 namespace App\Services;
 
+use App\Models\Balance;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class BalanceService
 {
+    protected $repositoryBalance;
+    protected $repositoryCategory;
+
+    public function __construct(
+        Balance $repositoryBalance,
+        Category $repositoryCategory
+        )
+    {
+        $this->repositoryBalance = $repositoryBalance;
+        $this->repositoryCategory = $repositoryCategory;
+    }
 
     public function getBalanceUser($userId)
     {
-        $transactions = DB::table('transactions')
-            ->where('user_id', '=', $userId)
-            ->get();
-
+        $transactions = $this->repositoryBalance->getAllBalanceByUser($userId);
         $incomeTotal = 0;
         $expenseTotal = 0;
 
-        foreach($transactions as $transaction){
-            if($transaction->type === 'INCOME'){
+        foreach ($transactions as $transaction) {
+            if ($transaction->type === 'INCOME') {
                 $incomeTotal += $transaction->amount;
-            }elseif($transaction->type === 'EXPENSE'){
+            } elseif ($transaction->type === 'EXPENSE') {
                 $expenseTotal += $transaction->amount;
             }
         }
@@ -38,31 +48,26 @@ class BalanceService
         ];
     }
 
-    public function listCategories(){
-        $categories = DB::table('category')
-            ->select('id','name')
-            ->get();
+    public function listCategories()
+    {
+        $responseCategories = $this->repositoryCategory->getAll();
 
-        return $categories;
+        return $responseCategories;
     }
 
-    public function create($transactionData){
-        DB::table('transactions')
-            ->insert([
-                'id' => Str::uuid(),
-                'user_id' => $transactionData['user_id'],
-                'name' => $transactionData['name'],
-                'amount' => $transactionData['amount'],
-                'type' => $transactionData['type'],
-                'category_id' => $transactionData['category_id'],
-            ]);
+    public function create($dataTransaction)
+    {
+        $dataTransaction['id'] = Str::uuid();
+
+        $this->repositoryBalance->create($dataTransaction);
     }
 
-    public function getTransactionsCategoryByUser($userId){
+    public function getTransactionsCategoryByUser($userId)
+    {
         $transactionsByCategory = DB::table('transactions')
             ->join('category', 'transactions.category_id', '=', 'category.id')
             ->select('transactions.*', 'category.name as category_name')
-            ->where('transactions.user_id','=',$userId)
+            ->where('transactions.user_id', '=', $userId)
             ->get()
             ->groupBy('category_name');
 
@@ -72,9 +77,9 @@ class BalanceService
         foreach ($transactionsByCategory as $categoryName => $transactions) {
 
             foreach ($transactions as $transaction) {
-                if($transaction->type === 'INCOME'){
+                if ($transaction->type === 'INCOME') {
                     $incomeTotal += $transaction->amount;
-                }elseif ($transaction->type === 'EXPENSE') {
+                } elseif ($transaction->type === 'EXPENSE') {
                     if (!isset($expenseTotalsByCategory[$categoryName])) {
                         $expenseTotalsByCategory[$categoryName] = 0;
                     }
@@ -100,6 +105,5 @@ class BalanceService
         }
 
         return $mergeArray;
-
     }
 }

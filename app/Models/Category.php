@@ -26,7 +26,8 @@ class Category extends Model
         });
     }
 
-    public function createCategory($categoryData){
+    public function createCategory($categoryData)
+    {
         DB::table($this->table)
             ->insert([
                 'id' => $categoryData['id'],
@@ -34,19 +35,38 @@ class Category extends Model
             ]);
     }
 
-    public function findOne($idCategory){
+    public function findOne($idCategory)
+    {
         $responseCategory = DB::table($this->table)
-                                ->where('id','=',$idCategory)
-                                ->first();
+            ->where('id', '=', $idCategory)
+            ->first();
 
         return $responseCategory;
     }
 
-    public function updateCategory($dataCategory, $idCategory){
+    public function getAll()
+    {
+        $responseCategories = DB::table($this->table)
+            ->get();
+
+        return  $responseCategories;
+    }
+
+    public function updateCategory($dataCategory, $idCategory)
+    {
         return DB::table($this->table)
-                    ->where('id','=',$idCategory)
-                    ->update([
-                        'name' => $dataCategory['name']
-                    ]);
+            ->where('id', '=', $idCategory)
+            ->update([
+                'name' => $dataCategory['name']
+            ]);
+    }
+
+    public function deleteCategory($idCategory)
+    {
+        $responseCategoryRow = DB::table($this->table)
+            ->where('id', '=', $idCategory)
+            ->delete();
+
+        return $responseCategoryRow;
     }
 }

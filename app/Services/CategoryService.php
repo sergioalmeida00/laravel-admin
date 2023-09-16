@@ -1,51 +1,61 @@
 <?php
+
 namespace App\Services;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\Category;
+use DomainException;
 
-class CategoryService{
-    protected $category;
+class CategoryService
+{
+    protected $repositoryCategory;
 
-    public function __construct(Category $category)
+    public function __construct(Category $repositoryCategory)
     {
-        $this->category = $category;
+        $this->repositoryCategory = $repositoryCategory;
     }
 
-    public function getCategories(){
-        $categories = DB::table('category')
-            ->get();
+    public function getCategories()
+    {
+        $responseCategories = $this->repositoryCategory->getAll();
 
-        return $categories;
+        return $responseCategories;
     }
 
-    public function create($categoryData){
+    public function create($categoryData)
+    {
         $categoryData['id'] = Str::uuid();
 
-        $this->category->createCategory($categoryData);
+        $this->repositoryCategory->createCategory($categoryData);
     }
 
-    public function getCategoryById($idCategory){
-        $category = DB::table('category')
-            ->where('id', '=', $idCategory)
-            ->first();
-
-        return $category;
+    public function getCategoryById($idCategory)
+    {
+        $responseCategory = $this->repositoryCategory->findOne($idCategory);
+        return $responseCategory;
     }
 
-    public function update($dataCategory, $idCategory){
+    public function update($dataCategory, $idCategory)
+    {
 
-        $existCategory = $this->category->findOne($idCategory);
+        $existCategory = $this->repositoryCategory->findOne($idCategory);
 
-        if($existCategory){
-            $this->category->updateCategory($dataCategory,$idCategory );
+        if ($existCategory) {
+            $this->repositoryCategory->updateCategory($dataCategory, $idCategory);
+        }
+    }
+
+    public function delete($idCategory)
+    {
+        $existsCategory = $this->repositoryCategory->findOne($idCategory);
+
+        if(!$existsCategory){
+            throw new DomainException('Categoria não existe!');
         }
 
-    }
+        $responseCategoryRow = $this->repositoryCategory->deleteCategory($idCategory);
 
-    public function delete($idCategory){
-        return DB::table('category')
-            ->where('id', '=', $idCategory)
-            ->delete();
+        return  $responseCategoryRow;
     }
 }
