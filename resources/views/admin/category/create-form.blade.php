@@ -20,8 +20,8 @@
 
 @section('modal-script')
     <script>
-        const formCatgory = document.querySelector('#form-category');
-        formCatgory.addEventListener('submit', handleSubmit)
+        const formCategory = document.querySelector('#form-category');
+        formCategory.addEventListener('submit', handleSubmit)
 
         async function handleSubmit(event) {
             event.preventDefault();
@@ -55,7 +55,8 @@
 
         function hideModalAndNavigate(route) {
             $('#exampleModal').modal('hide');
-            window.location.href = route;
+            renderCategory()
+            // window.location.href = route;
         }
 
         function highlightInvalidFields(form, fieldNames) {

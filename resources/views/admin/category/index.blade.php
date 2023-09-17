@@ -19,7 +19,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <div class="row">
+    <div class="row rendering-result">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
@@ -61,31 +61,58 @@
     @include('admin.category.create-form')
 
     <script>
-        const btnEditDelete = document.querySelectorAll('.btn-edit, .btn-delete');
+        const btnEditDelete = document.querySelector('.rendering-result');
         const addButton = document.querySelector('button[data-action="add"]');
         const inputName = document.querySelector('input[name="name"]');
 
+        async function renderCategory() {
+            try {
+                const response = await fetch("{{ url('category') }}");
+                if (!response.ok) {
+                    throw new Error("Erro ao buscar categorias.");
+                }
+
+                const html = await response.text();
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+
+                const table = tempDiv.querySelector('.table');
+                btnEditDelete.querySelector('.table').replaceWith(table);
+
+                // Reconfigure os eventos de botões de edição/exclusão
+                setupEditDeleteButtons();
+            } catch (error) {
+                console.error(error);
+            }
+        }
 
         addButton.addEventListener('click', () => {
             inputName.value = '';
+            formCategory.action = `{{ url('category') }}`
         })
 
-        btnEditDelete.forEach((btn) => {
-            const action = btn.getAttribute('data-action');
-            const idCategory = btn.value;
+        // Configurar eventos de botões de edição/exclusão
+        function setupEditDeleteButtons() {
+            const btnEdit = btnEditDelete.querySelectorAll('.btn-edit');
+            const btnDelete = btnEditDelete.querySelectorAll('.btn-delete');
 
-            btn.addEventListener('click', () => {
-                if (action === 'edit') {
+            btnEdit.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const idCategory = btn.value;
                     handleEditButtonClick(idCategory);
-                } else if (action === 'delete') {
-                    handleDelete(idCategory);
-                }
-            })
-            // if (btn.getAttribute('data-action') === 'edit') {
-            //     btn.addEventListener('click', () => handleEditButtonClick(btn));
-            // }
-        });
+                });
+            });
 
+            btnDelete.forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const idCategory = btn.value;
+                    handleDelete(idCategory);
+                });
+            });
+        }
+
+        // Configurar eventos de botões de edição/exclusão inicialmente
+        setupEditDeleteButtons();
 
         async function handleDelete(idCategory) {
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -98,16 +125,15 @@
                 },
             })
 
-            if(response.status === 200){
-                window.location.href = `{{route('category.index')}}`
+            if (response.status === 200) {
+                renderCategory();
             }
         }
 
         async function handleEditButtonClick(categoryID) {
-            // const categoryID = btn.value;
             const categoryData = await getCategoryId(categoryID);
             inputName.value = categoryData.name;
-            formCatgory.action = `{{ url('category/update/') }}/${categoryID}`;
+            formCategory.action = `{{ url('category/update/') }}/${categoryID}`;
         }
 
         async function getCategoryId(idCategory) {
