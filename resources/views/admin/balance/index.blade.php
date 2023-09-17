@@ -50,8 +50,24 @@
     <div class="row">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="card-title">Movimentações</h3>
+
+                    <form method="POST" action="{{ route('admin.filter') }}" >
+                        @csrf
+                        <div class="row">
+                            <div class="col-5">
+                                <input type="date" name="date_inicio" class="form-control">
+                            </div>
+                            <div class="col-5">
+                                <input type="date" name="date_fim" class="form-control">
+                            </div>
+                            <div class="col-2">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                        </div>
+                    </form>
                 </div>
 
                 <div class="card-body table-responsive p-0" style="height: 100%;">

@@ -30,6 +30,10 @@ class BalanceController extends Controller
         ]);
     }
 
+    public function filter(Request $request){
+        dd($request->all());
+    }
+
     public function store(Request $request){
         $userId = auth()->user()->id;
         $validatedData = $this->validateData($request);

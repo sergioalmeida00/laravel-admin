@@ -4,6 +4,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/','Admin\AdminController@index')->name('admin.home');
     Route::get('/balance','Admin\BalanceController@index')->name('admin.balance');
     Route::post('/balance','Admin\BalanceController@store')->name('admin.store');
+    Route::post('/balance/filter', 'Admin\BalanceController@filter')->name('admin.filter');
 });
 
 Route::middleware(['auth'])->prefix('category')->group(function () {
