@@ -60,98 +60,12 @@
     </div>
     @include('admin.category.create-form')
 
-    <script>
-        const btnEditDelete = document.querySelector('.rendering-result');
-        const addButton = document.querySelector('button[data-action="add"]');
-        const inputName = document.querySelector('input[name="name"]');
-
-        async function renderCategory() {
-            try {
-                const response = await fetch("{{ url('category') }}");
-                if (!response.ok) {
-                    throw new Error("Erro ao buscar categorias.");
-                }
-
-                const html = await response.text();
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = html;
-
-                const table = tempDiv.querySelector('.table');
-                btnEditDelete.querySelector('.table').replaceWith(table);
-
-                // Reconfigure os eventos de botões de edição/exclusão
-                setupEditDeleteButtons();
-            } catch (error) {
-                console.error(error);
-            }
-        }
-
-        addButton.addEventListener('click', () => {
-            inputName.value = '';
-            formCategory.action = `{{ url('category') }}`
-        })
-
-        // Configurar eventos de botões de edição/exclusão
-        function setupEditDeleteButtons() {
-            const btnEdit = btnEditDelete.querySelectorAll('.btn-edit');
-            const btnDelete = btnEditDelete.querySelectorAll('.btn-delete');
-
-            btnEdit.forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const idCategory = btn.value;
-                    handleEditButtonClick(idCategory);
-                });
-            });
-
-            btnDelete.forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    const idCategory = btn.value;
-                    handleDelete(idCategory);
-                });
-            });
-        }
-
-        // Configurar eventos de botões de edição/exclusão inicialmente
-        setupEditDeleteButtons();
-
-        async function handleDelete(idCategory) {
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-            const response = await fetch(`{{ url('category') }}/${idCategory}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken,
-                },
-            })
-
-            if (response.status === 200) {
-                renderCategory();
-            }
-        }
-
-        async function handleEditButtonClick(categoryID) {
-            const categoryData = await getCategoryId(categoryID);
-            inputName.value = categoryData.name;
-            formCategory.action = `{{ url('category/update/') }}/${categoryID}`;
-        }
-
-        async function getCategoryId(idCategory) {
-            try {
-                const response = await fetch(`{{ url('category') }}/${idCategory}`);
-                if (!response.ok) {
-                    throw new Error('Erro na requisição');
-                }
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Erro durante a requisição:', error);
-                return {};
-            }
-        }
-    </script>
 @stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/custom-color.css') }}">
+@stop
+
+@section('js')
+    @include('admin.category.scripts')
 @stop
