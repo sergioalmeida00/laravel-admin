@@ -57,6 +57,7 @@ class BalanceController extends Controller
 
         $resultBalance = $this->historicService->getBalanceUser($userId, $dateStart, $dateFim);
 
+
         return view('admin.balance.index', [
             'incomeTotal' => $resultBalance['incomeTotal'],
             'expenseTotal' => $resultBalance['expenseTotal'],

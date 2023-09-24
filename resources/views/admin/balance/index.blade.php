@@ -67,24 +67,22 @@
                 <div class="card-body table-responsive p-3">
                     <div class="row">
                         @foreach ($transactions as $transaction)
-                            <div class="col-lg-6 col-md-12">
+                            <div class="col-lg-6 col-md-12 animate-from-top">
                                 <div
                                     class="callout {{ $transaction->type === 'EXPENSE' ? 'callout-danger' : 'callout-success' }}">
+                                    <small class="badge badge-small-purple"> {{$transaction->category_name}} </small>
+                                    <small
+                                            class="badge badge-small-{{ $transaction->type === 'EXPENSE' ? 'danger' : 'success' }}">
+                                            {!! $transaction->type === 'EXPENSE'
+                                                ? '<i class="fas fa-minus"></i> Saida'
+                                                : '<i class="fas fa-plus"></i> Entrada' !!}
+                                        </small>
                                     <p>
                                         <strong>Descrição:</strong> {{ $transaction->name }} -
                                         <strong>Data:</strong>
                                         {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created)->format('d/m/Y') }}
                                     </p>
                                     <strong>Valor: R$ {{ number_format($transaction->amount, 2, '.', '') }}</strong>
-                                    <p>
-                                        <small
-                                            class="badge badge-small-{{ $transaction->type === 'EXPENSE' ? 'danger' : 'success' }}">
-                                            {!! $transaction->type === 'EXPENSE'
-                                                ? '<i class="fas fa-minus"></i> Saida'
-                                                : '<i class="fas fa-plus"></i> Entrada' !!}
-                                        </small>
-                                    </p>
-
                                 </div>
                             </div>
                         @endforeach

@@ -27,9 +27,11 @@ class Balance extends Model
     public function getAllBalanceByUser($idUser, $dateStart, $dateFim)
     {
         $responseBalanceUser = DB::table($this->table)
+            ->join('category', 'transactions.category_id', '=', 'category.id')
+            ->select('transactions.*', 'category.name as category_name')
             ->where('user_id', '=', $idUser)
-            ->where('created', '>=',$dateStart)
-            ->where('created', '<=',$dateFim)
+            ->where('transactions.created', '>=', $dateStart)
+            ->where('transactions.created', '<=', $dateFim)
             ->get();
 
         return $responseBalanceUser;
@@ -41,8 +43,8 @@ class Balance extends Model
             ->join('category', 'transactions.category_id', '=', 'category.id')
             ->select('transactions.*', 'category.name as category_name')
             ->where('transactions.user_id', '=', $idUser)
-            ->where('transactions.created', '>=',$dateStart)
-            ->where('transactions.created', '<=',$dateFim)
+            ->where('transactions.created', '>=', $dateStart)
+            ->where('transactions.created', '<=', $dateFim)
             ->get()
             ->groupBy('category_name');
 

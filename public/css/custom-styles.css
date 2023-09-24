@@ -10,6 +10,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+
 /* SOBRESCRITA COR BOOTSTRAP */
 .callout.callout-danger {
     border-left-color: var(--red);
@@ -33,6 +34,10 @@
 .badge-small-success {
     background: var(--green-ligth);
     color: white;
+}
+.badge-small-purple{
+    background:var(--purple-300);
+    color:white;
 }
 
 /* STYLE PROGRESS BAR */
@@ -60,11 +65,15 @@
     display: block;
     height: 100%;
     border-radius: 6px;
-    background: var(--primary-shape);
+    background: var(--purple-900);
     animation: progress 1s ease-out forwards;
     opacity: 0;
 }
+.animate-from-top {
+    animation: slideFromTop 0.5s ease-out;
+}
 
+/* ANIMAÇÕES */
 @keyframes progress {
     0% {
         width: 0;
@@ -72,6 +81,17 @@
     }
 
     100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideFromTop {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
         opacity: 1;
     }
 }
@@ -85,7 +105,7 @@
     padding: 2px 6px;
     border-radius: 3px;
     color: white;
-    background: var(--primary-shape);
+    background: var(--purple-900);
     z-index: 1;
 }
 
@@ -96,6 +116,6 @@
     height: 10px;
     width: 10px;
     z-index: -1;
-    background: var(--primary-shape);
+    background: var(--purple-900);
     transform: translateX(20%) rotate(45deg);
 }
