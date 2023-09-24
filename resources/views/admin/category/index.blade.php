@@ -6,7 +6,7 @@
         <h1>Categoria</h1>
         <button type="button" class="btn btn-success" data-toggle="modal" id="modal" data-target="#exampleModal"
             data-action="add">
-            + Adicionar
+            <strong><i class="fas fa-plus"></i> Adicionar</strong>
         </button>
     </div>
 @stop
@@ -150,4 +150,8 @@
             }
         }
     </script>
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('css/custom-color.css') }}">
 @stop

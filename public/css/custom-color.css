@@ -1,0 +1,13 @@
+@import url('root-color.css');
+
+.callout.callout-danger {
+    border-left-color: var(--red);
+}
+
+.callout.callout-success {
+    border-left-color: var(--green-ligth);
+}
+
+.btn-success {
+    background: var(--green-ligth);
+}

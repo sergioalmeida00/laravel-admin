@@ -309,54 +309,11 @@ return [
             'icon' => 'fas fa-solid fa-money-bill',
             'submenu' => [
                [
-                'text' => 'Saldo',
-                'url'  => 'admin/balance',
-                'icon' => 'fas fa-comment-dollar',
-               ],
-               [
                 'text' => 'Categoria',
                 'url' => 'category',
-                'icon' => 'fas fa-solid fa-clock-rotate-left',
+                'icon' => 'fas fa-address-book',
                ]
             ]
-        ],
-        [
-            'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share',
-            'submenu' => [
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-                [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                [
-                    'text' => 'level_one',
-                    'url'  => '#',
-                ],
-            ],
         ],
     ],
 

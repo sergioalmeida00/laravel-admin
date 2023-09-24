@@ -5,18 +5,15 @@
     }
 
     #success-outlined:checked+label {
-        background-color: #28a745;
-        /* Cor de fundo para botão de sucesso */
+        background-color: #00b37e;
         color: #fff;
-        /* Cor do texto */
     }
 
     #danger-outlined:checked+label {
-        background-color: #dc3545;
-        /* Cor de fundo para botão de perigo */
+        background-color: #ce4a4a;
         color: #fff;
-        /* Cor do texto */
     }
+
 </style>
 
 @extends('layouts.modal.modal')
@@ -49,7 +46,7 @@
         </div>
         <div class="form-group d-flex">
             <div class="flex-fill mx-1">
-                <input type="radio" class="btn-check d-none" name="type" value="INCOME" id="success-outlined"
+                <input type="radio" class="btn-check d-none success-card" name="type" value="INCOME" id="success-outlined"
                     autocomplete="off">
                 <label class="btn btn-outline-success w-100" for="success-outlined">Credito</label>
             </div>
@@ -116,3 +113,4 @@
         }
     </script>
 @endsection
+
