@@ -13,91 +13,89 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-4 col-6">
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>R$ {{ number_format($incomeTotal, 2, '.', '') }} </h3>
-                    <p>Entradas</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-solid fa-money-bill"></i>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-6">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>R$ {{ number_format($expenseTotal, 2, '.', '') }} </h3>
-                    <p>Saidas</p>
-                </div>
-                <div class="icon">
-                    <i class="fas fa-solid fa-money-bill"></i>
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="info-box callout callout-success">
+                <span class="info-box-icon"><i class="fas fa-dollar-sign"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Entradas</span>
+                    <span class="info-box-number">R$ {{ number_format($incomeTotal, 2, '.', '') }}</span>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: 70%"></div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-6">
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>R$ {{ number_format($balance, 2, '.', '') }} </h3>
-                    <p>Atual</p>
+        <div class="col-lg-4 col-md-6 mb-3">
+            <div class="info-box callout callout-danger">
+                <span class="info-box-icon"><i class="fas fa-dollar-sign"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Saidas</span>
+                    <span class="info-box-number">R$ {{ number_format($expenseTotal, 2, '.', '') }}</span>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: 70%"></div>
+                    </div>
                 </div>
-                <div class="icon">
-                    <i class="fas fa-solid fa-money-bill"></i>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-3 ">
+            <div class="info-box callout callout-success">
+                <span class="info-box-icon "><i class="fas fa-dollar-sign"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Atual</span>
+                    <span class="info-box-number">R$ {{ number_format($balance, 2, '.', '') }}</span>
+                    <div class="progress">
+                        <div class="progress-bar bg-info" style="width: 70%"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h3 class="card-title">Movimentações</h3>
-
-                    <form method="POST" action="{{ route('admin.filter') }}" >
-                        @csrf
-                        <div class="row">
-                            <div class="col-5">
-                                <input type="date" name="date_inicio" class="form-control">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        {{-- <h3 class="card-title">Movimentações</h3> --}}
+                        <form method="POST" action="{{ route('admin.filter') }}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <input type="date" name="date_inicio" class="form-control">
+                                </div>
+                                <div class="col-12 col-md-5">
+                                    <input type="date" name="date_fim" class="form-control">
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                </div>
                             </div>
-                            <div class="col-5">
-                                <input type="date" name="date_fim" class="form-control">
-                            </div>
-                            <div class="col-2">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
-
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
 
-                <div class="card-body table-responsive p-0" style="height: 100%;">
-                    <table class="table table-head-fixed text-nowrap">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Descrição</th>
-                                <th>Valor</th>
-                                <th>Data</th>
-                                <th>Tipo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($transactions as $transaction)
-                                <tr>
-                                    <td> {{ $transaction->id }} </td>
-                                    <td> {{ $transaction->name }} </td>
-                                    <td> R$ {{ number_format($transaction->amount, 2, '.', '') }} </td>
-                                    <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created)->format('d/m/Y') }}
-                                    </td>
-                                    <td><span
-                                            class="badge {{ $transaction->type === 'EXPENSE' ? 'badge-danger' : 'badge-success' }}">
-                                            {{ $transaction->type }} </span></td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                <div class="card-body table-responsive p-3">
+                    <div class="row">
+                        @foreach ($transactions as $transaction)
+                            <div class="col-lg-6 col-md-12">
+                                <div
+                                    class="callout {{ $transaction->type === 'EXPENSE' ? 'callout-danger' : 'callout-success' }}">
+                                    <h5><strong>Descrição:</strong> {{ $transaction->name }}</h5>
+                                    <p><strong>Data:</strong>
+                                        {{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $transaction->created)->format('d/m/Y') }}
+                                    </p>
+                                    <strong>Valor: R$ {{ number_format($transaction->amount, 2, '.', '') }}</strong>
+                                    <p>
+                                        <small class="badge badge-{{ $transaction->type === 'EXPENSE' ? 'danger' : 'success' }}">
+                                            {!! $transaction->type === 'EXPENSE' ? '<i class="fas fa-minus"></i> Saida' : '<i class="fas fa-plus"></i> Entrada' !!}
+                                        </small>
+                                    </p>
 
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -128,4 +126,16 @@
     </div>
     @include('admin.balance.modal.create')
 
+@stop
+@section('css')
+    <style>
+        .callout {
+            transition: transform 0.2s;
+        }
+
+        .callout:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 @stop
