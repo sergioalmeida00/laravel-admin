@@ -18,6 +18,7 @@ class Balance extends Model
                 'name' => $dataTransaction['name'],
                 'amount' => $dataTransaction['amount'],
                 'type' => $dataTransaction['type'],
+                'created' => $dataTransaction['date'],
                 'category_id' => $dataTransaction['category_id'],
             ]);
 
