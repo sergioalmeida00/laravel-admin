@@ -31,7 +31,6 @@ class BalanceController extends Controller
 
     public function store(Request $request)
     {
-        $userId = auth()->user()->id;
         $validatedData = $this->validateData($request);
 
         if ($validatedData->fails()) {
@@ -42,17 +41,16 @@ class BalanceController extends Controller
         }
 
         $allData = $request->all();
-        $allData['user_id'] = $userId;
 
         $this->historicService->create($allData);
-
 
         return response()->json(['success' => true, 'values' => $allData]);
     }
 
     private function renderBalanceView($dateStart = null, $dateFim = null)
     {
-        $userId = auth()->user()->id;
+        $userId = request()->userId;
+
         $categories = $this->historicService->listCategories();
 
         $resultBalance = $this->historicService->getBalanceUser($userId, $dateStart, $dateFim);

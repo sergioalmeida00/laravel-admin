@@ -14,7 +14,7 @@ class Balance extends Model
         $responseTransactionRow = DB::table($this->table)
             ->insert([
                 'id' => $dataTransaction['id'],
-                'user_id' => $dataTransaction['user_id'],
+                'user_id' => $dataTransaction['userId'],
                 'name' => $dataTransaction['name'],
                 'amount' => $dataTransaction['amount'],
                 'type' => $dataTransaction['type'],
