@@ -38,7 +38,7 @@ class BalanceController extends Controller
             return response()->json([
                 'errors' => $validatedData->errors()->all(),
                 'fields' => $validatedData->errors()->keys(),
-            ]);
+            ], 422);
         }
 
         $allData = $request->all();
@@ -57,7 +57,6 @@ class BalanceController extends Controller
 
         $resultBalance = $this->historicService->getBalanceUser($userId, $dateStart, $dateFim);
 
-        // dd($resultBalance);
         return view('admin.balance.index', [
             'incomeTotal' => $resultBalance['incomeTotal'],
             'expenseTotal' => $resultBalance['expenseTotal'],

@@ -15,16 +15,15 @@
                 }
             });
 
-            if (response.ok) {
+            // if (response.ok) {
                 const responseData = await response.json();
-                console.log(responseData)
 
                 if (responseData.success) {
                     hideModalAndNavigate('{{ route('admin.balance') }}')
                 } else {
                     highlightInvalidFields(form, responseData.fields)
                 }
-            }
+            // }
         } catch (error) {
             console.error('Erro durante a requisição:', error);
         }
