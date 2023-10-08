@@ -24,6 +24,17 @@
     background: var(--green-ligth);
 }
 
+.page-link{
+    color:var(--purple-300);
+    font-weight: bold;
+}
+
+.page-item.active .page-link{
+    background:var(--purple-300);
+    border-color:var(--purple-300);
+    font-weight: bold;
+}
+
 /* FIM */
 
 .badge-small-danger {

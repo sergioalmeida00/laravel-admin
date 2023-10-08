@@ -87,6 +87,10 @@
                             </div>
                         @endforeach
                     </div>
+                    <div class="d-flex justify-content-center align-items-center mt-3">
+                        {{ $transactions->links() }}
+                    </div>
+
                 </div>
             </div>
 

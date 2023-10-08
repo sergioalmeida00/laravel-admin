@@ -25,7 +25,7 @@ class Balance extends Model
         return $responseTransactionRow;
     }
 
-    public function getAllBalanceByUser($idUser, $dateStart, $dateFim, $groupByCategory = false)
+    public function getAllBalanceByUser($idUser, $dateStart, $dateFim, $groupByCategory = false,$perPage = 6)
     {
         $query = DB::table('transactions')
             ->select('transactions.*', 'category.name as category_name')
@@ -38,7 +38,7 @@ class Balance extends Model
             $result = $query->get();
             return $result->groupBy('category_name');
         } else {
-            return $query->get();
+            return $query->paginate($perPage);
         }
     }
 

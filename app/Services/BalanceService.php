@@ -48,19 +48,23 @@ class BalanceService
 
         $transactionsByCategory = $this->repositoryBalance->getAllBalanceByUser($userId, $dateStart, $dateFim, true);
 
+        $transactions = $this->repositoryBalance->getAllBalanceByUser($userId, $dateStart, $dateFim);
+
+
+
         $expenseByCategoryAndBalance = $this->calculateExpenseTotalsByCategory($transactionsByCategory);
         $percentagesByCategory = $this->calculateExpensePercentagesByCategory(
             $expenseByCategoryAndBalance['expenseTotalsByCategory'],
             $expenseByCategoryAndBalance['incomeTotal']
         );
 
-        $mergeArray = $this->combineData($percentagesByCategory,$expenseByCategoryAndBalance['expenseTotalsByCategory'] );
+        $mergeArray = $this->combineData($percentagesByCategory, $expenseByCategoryAndBalance['expenseTotalsByCategory']);
 
         return [
             'incomeTotal' => $expenseByCategoryAndBalance['incomeTotal'],
             'expenseTotal' => $expenseByCategoryAndBalance['expenseTotal'],
             'balance' => $expenseByCategoryAndBalance['balance'],
-            'transactions' => $expenseByCategoryAndBalance['transactions'],
+            'transactions' => $transactions,
             'amountByCategory' => $mergeArray
         ];
     }
@@ -71,12 +75,10 @@ class BalanceService
         $expenseTotalsByCategory = [];
         $incomeTotal = 0;
         $expenseTotal = 0;
-        $transactionsNew = [];
 
         foreach ($transactionsByCategory as $categoryName => $transactions) {
 
             foreach ($transactions as $transaction) {
-                $transactionsNew[] = $transaction;
                 if ($transaction->type === 'INCOME') {
                     $incomeTotal += $transaction->amount;
                 } elseif ($transaction->type === 'EXPENSE') {
@@ -95,7 +97,6 @@ class BalanceService
             'incomeTotal' => $incomeTotal,
             'expenseTotal' => $expenseTotal,
             'balance' => $balance,
-            'transactions' => $transactionsNew
         ];
     }
 
